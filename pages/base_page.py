@@ -1,6 +1,7 @@
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 
 class BasePage:
     def __init__(self, driver):
@@ -20,3 +21,10 @@ class BasePage:
             return True
         except TimeoutException:
             return False
+
+    def send_keys_to_element(self, locator, text):
+        self.find_element_with_wait(locator).send_keys(text)
+
+    def select_option_by_text(self, text):
+        locator = (By.XPATH,f"//div[@role='option' and text()='{text}']")
+        self.click_element_with_wait(locator)

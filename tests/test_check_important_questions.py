@@ -1,7 +1,6 @@
 import pytest
 from data import QUESTIONS_AND_ANSWERS
 from pages.home_page import ImportantQuestionsPage, AcceptCookies
-
 from urls import BASE_URL
 
 @pytest.mark.parametrize(
