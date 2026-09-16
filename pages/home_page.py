@@ -12,10 +12,8 @@ class ImportantQuestionsPage(BasePage):
 
     def click_on_question(self, locator):
         element = self.find_element_with_wait(locator)
-
-        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
-
-        self.driver.execute_script("arguments[0].click();", element)
+        self.scroll_to_element(element)
+        self.click_element(element)
 
     def get_answer_text(self, locator):
         return self.find_element_with_wait(locator).text

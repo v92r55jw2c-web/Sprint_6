@@ -1,6 +1,5 @@
 from pages.base_page import BasePage
 from locators import OrderPageLocators
-from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 class OrderFlow(BasePage):
@@ -22,7 +21,7 @@ class OrderFlow(BasePage):
 
     def enter_metro_station(self, metro):
         self.send_keys_to_element(OrderPageLocators.METRO_STATION_INPUT, metro)
-        self.click_element_with_wait((By.XPATH, f"//*[contains(@class, 'select-search__select') and " f".//*[text()='{metro}']]"))
+        self.click_element_with_wait((OrderPageLocators.METRO_STATION[0], OrderPageLocators.METRO_STATION[1].format(metro)))
 
     def enter_phone_number(self, phone):
         self.send_keys_to_element(OrderPageLocators.PHONE_NUMBER_INPUT, phone)
@@ -36,7 +35,7 @@ class OrderFlow(BasePage):
 
     def select_rental_period(self, period):
         self.click_element_with_wait(OrderPageLocators.RENTAL_PERIOD_DROPDOWN)
-        self.select_option_by_text(period)
+        self.select_option_by_text(OrderPageLocators.RENTAL_PERIOD, period)
 
     def select_scooter_color(self, color):
         colors = {"black": OrderPageLocators.SCOOTER_COLOR_BLACK, "grey": OrderPageLocators.SCOOTER_COLOR_GREY}

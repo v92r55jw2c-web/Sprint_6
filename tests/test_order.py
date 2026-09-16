@@ -5,9 +5,6 @@ from pages.order_page import OrderFlow
 from urls import BASE_URL, DZEN_URL
 from pages.home_page import AcceptCookies, NavigateToLogo
 from locators import OrderPageLocators
-from selenium.webdriver.support.wait import WebDriverWait
-
-
 
 class TestOrder:
 
@@ -15,11 +12,10 @@ class TestOrder:
 
     @pytest.mark.parametrize("data", ORDER_DATA)
     def test_order_scooter(self, driver, data):
-
-        driver.get(BASE_URL)
-
-        cookies = AcceptCookies(driver) 
         order_page = OrderFlow(driver)
+        order_page.open_page(BASE_URL)
+        cookies = AcceptCookies(driver) 
+
 
         cookies.accept_cookies()
         order_page.click_on_button_order_header()
@@ -48,10 +44,9 @@ class TestOrderButtonFinish:
 
     @allure.description('Тест перехода по второй точке входа для успешного создания заказа - нижняя кнопка "Заказать"')
     def test_order_button_at_finish(self, driver):
-        driver.get(BASE_URL)
-    
-        cookies = AcceptCookies(driver) 
         order_page = OrderFlow(driver)
+        order_page.open_page(BASE_URL)
+        cookies = AcceptCookies(driver) 
     
         cookies.accept_cookies()
         order_page.click_on_button_order_finish()
@@ -63,40 +58,34 @@ class TestLogos:
 
     @allure.description('Проверка перехода по логотипу "Самокат" на главную страницу')
     def test_click_on_scooter_logo(self, driver):
-        driver.get(BASE_URL)
-
+        navigate = NavigateToLogo(driver)
+        navigate.open_page(BASE_URL)
         cookies = AcceptCookies(driver) 
         order_page = OrderFlow(driver)
-        navigate = NavigateToLogo(driver)
-            
+
         cookies.accept_cookies()
         order_page.click_on_button_order_finish()
         navigate.click_on_scooter_logo()
 
-        assert driver.current_url == BASE_URL
+        assert navigate.get_current_url() == BASE_URL
 
 
     @allure.description('Проверка перехода по логотипу "Яндекс" на страницу Дзен')
     def test_click_on_yandex_logo(self, driver):
-        driver.get(BASE_URL)
-        cookies = AcceptCookies(driver) 
-        navigate = NavigateToLogo(driver)
-                    
-        cookies.accept_cookies()
-        original_window = driver.current_window_handle
 
+        navigate = NavigateToLogo(driver)
+        navigate.open_page(BASE_URL)
+
+        cookies = AcceptCookies(driver) 
+        cookies.accept_cookies()
+    
+        original_window = navigate.get_current_window()
         navigate.click_on_yandex_logo()
 
-        WebDriverWait(driver, 10).until(lambda d: len(d.window_handles) == 2)
+        navigate.wait_for_new_window(2) 
+        navigate.switch_to_new_window(original_window) 
 
-        for window_handle in driver.window_handles:
-            if window_handle != original_window:
-                driver.switch_to.window(window_handle)
-                break
-
-        WebDriverWait(driver, 10).until(lambda d: d.current_url == DZEN_URL)
-
-        assert driver.current_url == DZEN_URL
+        assert navigate.is_url_opened(DZEN_URL)
         
 
 
