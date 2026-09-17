@@ -4,7 +4,6 @@ from data import ORDER_DATA
 from pages.order_page import OrderFlow
 from urls import BASE_URL, DZEN_URL
 from pages.home_page import AcceptCookies, NavigateToLogo
-from locators import OrderPageLocators
 
 class TestOrder:
 
@@ -51,7 +50,7 @@ class TestOrderButtonFinish:
         cookies.accept_cookies()
         order_page.click_on_button_order_finish()
 
-        assert order_page.find_element_with_wait(OrderPageLocators.BUTTON_NEXT_ON_FORM_ORDER).is_displayed()
+        assert order_page.is_next_button_displayed()
 
          
 class TestLogos:

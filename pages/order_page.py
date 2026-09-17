@@ -56,6 +56,9 @@ class OrderFlow(BasePage):
     def click_on_button_status(self):
         self.click_element_with_wait(OrderPageLocators.BUTTON_STATUS_ORDER)
 
+    def is_next_button_displayed(self):
+        return self.find_element_with_wait(OrderPageLocators.BUTTON_NEXT_ON_FORM_ORDER).is_displayed()
+
     
 
 
